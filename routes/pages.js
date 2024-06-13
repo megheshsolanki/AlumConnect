@@ -16,7 +16,9 @@ router.get('/search',async(req,res,next)=>{
             else return res.redirect('/login');});
     }catch (error) {next(error); }
 });
-
+router.get('/about',async(req,res,next)=>{
+    try { res.render('about'); } catch (error) {next(error); }
+});
 router.get('/user/:username',async(req,res,next)=>{
     try { let token=req.cookies.AITRConnect; alumni.findByToken(token,(err,det)=>{
         if(err) return  res(err);

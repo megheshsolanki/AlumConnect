@@ -2,6 +2,7 @@ import express from "express";
 import alumni from'../models/alumni.js';
 import post from'../models/post.js';
 import auth from './../middlewares/auth.js'; 
+import event from '../models/event.js';
 const router = express.Router();
 
 router.post('/updateUser',async(req,res,next)=>{
@@ -18,7 +19,6 @@ router.post('/updateUser',async(req,res,next)=>{
   })
 
 
-import tempData from '../tempData/tempData.js';
 router.get('/updateTemp',async(req,res,next)=>{
     try{
           alumni.deleteMany({},(err)=>{
@@ -183,6 +183,35 @@ router.get('/getPost',async(req,res,next)=>{
     next(error)
   }
 }); 
+
+router.post('/createEvent',(req,res,next)=>{
+    let token = req.cookies.AITRConnect;
+    let eventDet = req.body;
+    alumni.findByToken(token,(err,user)=>{
+      if(err) return  res(err);
+      eventDet.createdBy=user.name;
+      eventDet.userId= user._id;
+      const newEvent = new event(eventDet);
+      newEvent.save((err,doc)=>{
+        if(err) {console.log(err);
+            return res.status(400).json({ success : false});}
+                 if(user) return res.redirect('/dashboard#event'); 
+           });
+      })
+    });
+
+router.get('/getEvents',(req,res,next)=>{
+  try {
+    var q = event.find({}).sort({_id: -1});
+    q.exec(function(err, property) {
+        if (err) res.send(err);
+        res.json(property);
+    });
+    // res.send("done");
+  } catch (error) {
+    next(error)
+  }
+})
 
 export default router;
   

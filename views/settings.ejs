@@ -131,7 +131,7 @@
             </span>
       
             <div class="text logo-text">
-              <span class="name">  <a href="/"> ALUM Connect </a> </span>
+              <span class="name">  <a href="/dashboard"> ALUM Connect </a> </span>
             </div>
           </div>
           <i class="fa-solid fa-bars toggle"></i>
@@ -168,7 +168,13 @@
                   <span class="text nav-text">Notifications</span>
                 </a>
               </li>
-
+              
+              <li class="nav-link">
+                <a href="#event" id="dash5">
+                  <i class="fa-solid fa-calendar-days icon"></i>
+                  <span class="text nav-text">Events</span>
+                </a>
+              </li>
               <li class="nav-link">
                 <a href="#setting" id="dash4">
                   <i class="fa-solid fa-gear icon"></i>
@@ -212,10 +218,10 @@
             <h3><%= locals.user.name %></h3>
              <img src="<%=((locals.user.image)?locals.user.image:"./images/user.png")%>" type="button" data-bs-toggle="dropdown" aria-expanded="false">
              <ul class="dropdown-menu dropdown-menu-light">
-              <li><a class="dropdown-item active" href="/">Home Page</a></li>
-              <li><a class="dropdown-item" href="/comingsoon">Events Page</a></li>
+              <!-- <li><a class="dropdown-item active" href="/">Home Page</a></li>
+              <li><a class="dropdown-item" href="/dashboard#event">Events Page</a></li>
               <li><a class="dropdown-item" href="/comingsoon">Talk to Alumni </a></li>
-              <li><hr class="dropdown-divider"></li>
+              <li><hr class="dropdown-divider"></li> -->
               <li><a class="dropdown-item" href="/logout">Logout</a></li>
             </ul>
            </div>
@@ -271,6 +277,7 @@
           </div>
            </div> -->
            <div class="row profileCon">
+            <h2 class="center">Profile</h2>
             <div class="col-md-8 col-lg-6 col-12 basicInfo">
             <span data-bs-toggle="modal" data-bs-target="#exampleModal1" class="editBTN">Edit</span>
                 <img src="<%=((locals.user.image)?locals.user.image:"./images/user.png")%>" alt="">
@@ -338,7 +345,7 @@
 
 <!-- ------------------------------------------------------ Feed Section ------------------------------------------------------ -->
         <div class="row postContainer" id="feed">
-
+          <h2 class="center">Feed</h2>
         </div>
 
 <!-- ------------------------------------------------------ Search Section ------------------------------------------------------ -->
@@ -459,7 +466,66 @@
         </div>
 
         </div>        
-<!-- ------------------------------------------------------ The end Section ------------------------------------------------------ -->        
+<!-- ------------------------------------------------------ The event Section ------------------------------------------------------ --> 
+<div class="row eventContainer hidden" id="event">
+  <h2 class="center">Events</h2>
+  <span class="add-event">
+    <!-- <button type="button" class="btn btn-primary"></button> -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" >
+      + Add Event
+    </button>
+  </span>
+  <!-- Button trigger modal -->
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">Add Event</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="" id="newEvent">
+          <div class=" dataForm" id="eventForm">
+            <div class="col-lg-6 col-md-7 col-11 mainCon" style="width: 100%;">
+              <form  method="post" action="/api/createEvent" >
+                  <h4>Create Event</h4>
+                  <div class="inputCon">
+                    <i class="fa-solid fa-quote-left"></i>
+                      <input required type="text" placeholder="Title of Event" name="title">
+                  </div>
+                  <div class="inputCon">
+                    <i class="fa-solid fa-circle-info"></i>
+                      <input required type="text" placeholder="Technology" name="technology">
+                  </div>
+                  <div class="inputCon">
+                    <i class="fa-solid fa-clock"></i>
+                    <input required type="date" placeholder="" name="date">
+                    </div>
+                    <div class="inputCon">
+                      <i class="fa-regular fa-pen-to-square"></i>
+                        <input required type="text" placeholder="More About Event" name="details">
+                    </div>
+                  <!-- <div class="value1" id="value1"> </div> -->
+                  <div class="center">
+                      <input class="custBTN" type="submit" value="Create Event" id="okSubmit">
+                  </div>
+              </form>
+          </div>
+         </div>
+        </div>
+      </div>
+      <!-- <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+  
+</div>
+
         </div>
       </section>
 
@@ -471,6 +537,14 @@
       <script src="./js/dashboard.js"></script>
       <script src="./js/editor.js"></script>
       <script src="./js/search.js"></script>
+      <script>
+        const myModal = document.getElementById('myModal')
+        const myInput = document.getElementById('myInput')
+
+        myModal.addEventListener('shown.bs.modal', () => {
+          myInput.focus()
+        })
+      </script>
       <% function timeSince(date) {
 
         var seconds = Math.floor((new Date() - date) / 1000);

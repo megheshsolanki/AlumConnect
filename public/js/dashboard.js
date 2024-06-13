@@ -25,7 +25,7 @@ toggle.addEventListener("click", () => {
 //   console.log(document.querySelector(".fr-wrapper .fr-view").innerHTML);
 // });
 
-var sectionArr = ["feed","profile","search","new","setting"];
+var sectionArr = ["feed","profile","search","new","setting","event"];
 
 sectionArr.forEach((ele,i) => {
     var sidebarEle = `dash${i}`;
@@ -63,13 +63,66 @@ async function fetchPost(){
           </div>
         </div>`;
       });
-      postContainer.innerHTML = temp;
+      postContainer.innerHTML += temp;
   } catch (error) {
       console.log(error);
       
   }
 }
 fetchPost();
+
+const eventContainer = document.querySelector('.eventContainer');
+async function fetchEvent(){
+  try {
+      const response = await fetch('/api/getEvents');
+      const data = await response.json();
+      var temp = ``;
+      data.forEach(post => {
+        let d = new Date(post.date).getDate() + "/" + (new Date(post.createdAt).getMonth() + 1) + "/" + new Date(post.createdAt).getFullYear();
+        temp += 
+        `<div class="card" style="width: 60%; margin: 1rem">
+          <div class="card-header">
+            <h3>${post.title}</h3>  
+          </div>
+          <div class="card-body">
+              <ul class="list-group list-group-flush">
+                <li class="list-group-item">Technology : ${post.technology}</li>
+                <li class="list-group-item">Date of event: ${d}</li>
+                <li class="list-group-item">Joining link: some link</li>
+              </ul>
+            <h6></h6>
+            <blockquote class="blockquote mb-0">
+              <p>${post.details}</p>
+              <footer class="blockquote-footer">Uploaded by <cite title="Source Title">${post.createdBy}</cite></footer>
+            </blockquote>
+          </div>
+        </div>`
+        
+       /*temp += `
+       <div class="postDiv col-lg-8 col-12">
+         <div class="userPhoto">
+             <img src="${(post.image)?post.image:(post.image)}" alt="">
+             <div class="userDet">
+               <h3>${post.title}</h3>
+               <p>Uploaded: ${timeSince(new Date(post.createdAt))} ago</p>
+               <p>Uploaded by: ${post.createdBy}</p>
+             </div>
+           </div>
+         <div class="title">
+               <h6>${post.technology}</h6>
+               <h5> Date: ${d}</h5>
+               <div class="content">${post.details}</div>
+         </div>
+       </div>`*/;
+      });
+      eventContainer.innerHTML += temp;
+  } catch (error) {
+      console.log(error);
+      
+  }
+}
+fetchEvent();
+
 
 
 function timeSince(date) {
